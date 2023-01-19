@@ -3,6 +3,7 @@
 # Script to detect errors in guide2go and retry/fail gracefully
 #
 # Set $BASEDIR to the guide2go directory
+# Set $BINARY to the guide2go application filename
 # Set $CONF to the guide2go configuration filename
 # Set $LOGFILE to the log filename
 # Set $MAILPATH to the location of mail program
@@ -20,14 +21,15 @@
 
 DEBUG=0
 BASEDIR=/path/to/guide2go
-CONF=guide2go_config.yaml
+BINARY=guide2go
+CONF=guide2go-config.yaml
 LOGFILE=guide2go.log
 MAILPATH=/usr/bin/mail
 RETRIES=5
 RETRYDELAY=60s
 ALERTEMAIL=your@email.com
 SERVERNAME=your.server.com
-MAXBACKUPS=5
+MAXBACKUPS=10
 XMLWORK=guide2go-schedule.xml
 JSONWORK=guide2go-cache.json
 LOOPCOUNTER=1
@@ -159,8 +161,8 @@ while true; do
         echolog ""
     fi
 
-    if [[ -f $BASEDIR/guide2go && -f $BASEDIR/$CONF ]]; then
-        $BASEDIR/guide2go -config $BASEDIR/$CONF 2>&1 | tee -a $BASEDIR/$LOGFILE
+    if [[ -f $BASEDIR/$BINARY && -f $BASEDIR/$CONF ]]; then
+        $BASEDIR/$BINARY -config $BASEDIR/$CONF 2>&1 | tee -a $BASEDIR/$LOGFILE
     else
         echolog ""
         echolog "------------------------------------------------"
